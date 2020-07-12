@@ -1,2 +1,2 @@
 # Projeto-ED
-Um repos. temporário pro projeto de E.D.
+Criei este repositório para que possamos fazer o Projeto de forma simples e rápida
