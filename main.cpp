@@ -3,8 +3,8 @@
 #include <cstring>
 #include <fstream>
 #include <cstdlib>
-#include "noh.hpp"
-#include "grupo.hpp"
+#include "noh.h"
+#include "grupo.h"
 
 
 using namespace std;
