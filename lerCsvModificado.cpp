@@ -1,0 +1,110 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <fstream>
+#include <cstdlib>
+
+using namespace std;
+
+// para saber o tamanho de cada campo, fiz um primeiro teste para
+// pegar o tamanho máximo de cada campo do tipo texto
+// adicionei mais uma posição para armazenar o término de string '\0'
+struct pacote {
+    unsigned indice; 
+    float tempo;
+    char origem[40];
+    char destino[40];
+    char protocolo[18];
+    unsigned tamanho;
+    char infomarcao[1650];
+};
+
+int main(){
+    std::ifstream arquivo_csv("captura_pacotes.csv");
+    if (not(arquivo_csv)) {
+        return EXIT_FAILURE;
+    }
+
+    string linha;
+    getline(arquivo_csv,linha); // descarta primeira linha do arquivo
+
+    string campo; // variável para obter um campo de cada linha lida
+    string delimitador = "\",\""; // delimitador entre os campos
+    unsigned posFimCampo; // posição final do campo
+
+    pacote umPacote;
+
+    while(getline(arquivo_csv,linha)) {
+        campo = linha.erase(0,1); // remove primeiro caracter da linha (")
+
+        // obtendo primeiro campo, um inteiro - No.
+        posFimCampo = linha.find(delimitador);
+        campo = linha.substr(0, posFimCampo);
+        linha.erase(0, posFimCampo + delimitador.length());
+        if( stoul(campo) > 2076361  && stoul(campo) < 2162875 ) { //passa pra memória apenas o trecho específico
+            umPacote.indice = stoul(campo);
+
+            // obtendo segundo campo, um float - Time
+            posFimCampo = linha.find(delimitador);
+            campo = linha.substr(0, posFimCampo);
+            linha.erase(0, posFimCampo + delimitador.length());
+            umPacote.tempo = stof(campo);
+
+            // obtendo terceiro campo, um texto - Source
+            posFimCampo = linha.find(delimitador);
+            campo = linha.substr(0, posFimCampo);
+            linha.erase(0, posFimCampo + delimitador.length());
+            strcpy(umPacote.origem, campo.c_str());
+
+            // obtendo quarto campo, um texto - Destination
+            posFimCampo = linha.find(delimitador);
+            campo = linha.substr(0, posFimCampo);
+            linha.erase(0, posFimCampo + delimitador.length());
+            strcpy(umPacote.destino, campo.c_str());
+
+            // obtendo quinto campo, um texto - Protocol
+            posFimCampo = linha.find(delimitador);
+            campo = linha.substr(0, posFimCampo);
+            linha.erase(0, posFimCampo + delimitador.length());
+            strcpy(umPacote.protocolo, campo.c_str());
+
+            // obtendo sexto campo, um texto - Length
+            posFimCampo = linha.find(delimitador);
+            campo = linha.substr(0, posFimCampo);
+            linha.erase(0, posFimCampo + delimitador.length());
+            umPacote.tamanho = stoul(campo);
+
+            // obtendo último campo, um texto - Info
+            // nesse caso, procuro o último aspas, fazendo busca reversa
+            posFimCampo = linha.rfind("\"");
+            campo = linha.substr(0, posFimCampo);
+            strcpy(umPacote.infomarcao, campo.c_str());
+
+            // agora é com você, umPacote já tem o conteúdo de uma linha
+
+            /*descomente caso queira imprimir o conteúdo de cada pacote
+            cout << umPacote.indice << endl;
+            cout << umPacote.tempo << endl;
+            cout << umPacote.origem << endl;
+            cout << umPacote.destino << endl;
+            cout << umPacote.protocolo << endl;
+            cout << umPacote.tamanho << endl;
+            cout << umPacote.infomarcao << endl;
+            */
+        
+        }
+        
+    }
+
+    // imprimindo o último pacote
+    // só para fins de teste, remova isso de sua aplicação
+    cout << umPacote.indice << endl;
+    cout << umPacote.tempo << endl;
+    cout << umPacote.origem << endl;
+    cout << umPacote.destino << endl;
+    cout << umPacote.protocolo << endl;
+    cout << umPacote.tamanho << endl;
+    cout << umPacote.infomarcao << endl;
+
+    return 0;
+}
