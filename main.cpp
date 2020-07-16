@@ -3,6 +3,9 @@
 #include <cstring>
 #include <fstream>
 #include <cstdlib>
+#include "noh.h"
+#include "grupo.h"
+
 
 using namespace std;
 
@@ -21,7 +24,7 @@ struct pacote {
 
 int main(){
     std::ifstream arquivo_csv("captura_pacotes.csv");
-    if (not(arquivo_csv)) {
+    if (!arquivo_csv) {
         return EXIT_FAILURE;
     }
 
@@ -40,7 +43,7 @@ int main(){
 
     pacote umPacote;
 
-    while(getline(arquivo_csv,linha) and umPacote.indice <  2162875) {
+    while(getline(arquivo_csv,linha) && umPacote.indice <  2162875) {
         campo = linha.erase(0,1); // remove primeiro caracter da linha (")
 
         // obtendo primeiro campo, um inteiro - No.
@@ -98,16 +101,6 @@ int main(){
         */
         
     }
-
-    // imprimindo o último pacote
-    // só para fins de teste, remova isso de sua aplicação
-    cout << umPacote.indice << endl;
-    cout << umPacote.tempo << endl;
-    cout << umPacote.origem << endl;
-    cout << umPacote.destino << endl;
-    cout << umPacote.protocolo << endl;
-    cout << umPacote.tamanho << endl;
-    cout << umPacote.infomarcao << endl;
 
     return 0;
 }
