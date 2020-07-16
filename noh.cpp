@@ -1,5 +1,5 @@
 #include <iostream>
-#include "noh.h"
+#include "noh.hpp"
 using namespace std;
 
 Noh::Noh(int mDado){
