@@ -26,7 +26,13 @@ int main(){
     }
 
     string linha;
-    getline(arquivo_csv,linha); // descarta primeira linha do arquivo
+    int starting_line = 2076361;  //pos da primeira linha a ser lida
+    for (int i = 1; i < starting_line; i += 1) {
+        if(!getline(arquivo_csv,linha)) {  
+            return EXIT_FAILURE;
+        }
+    }
+
 
     string campo; // variável para obter um campo de cada linha lida
     string delimitador = "\",\""; // delimitador entre os campos
@@ -34,65 +40,62 @@ int main(){
 
     pacote umPacote;
 
-    while(getline(arquivo_csv,linha)) {
+    while(getline(arquivo_csv,linha) and umPacote.indice <  2162875) {
         campo = linha.erase(0,1); // remove primeiro caracter da linha (")
 
         // obtendo primeiro campo, um inteiro - No.
         posFimCampo = linha.find(delimitador);
         campo = linha.substr(0, posFimCampo);
         linha.erase(0, posFimCampo + delimitador.length());
-        if( stoul(campo) > 2076361  && stoul(campo) < 2162875 ) { //passa pra memória apenas o trecho específico
-            umPacote.indice = stoul(campo);
+        umPacote.indice = stoul(campo);
 
-            // obtendo segundo campo, um float - Time
-            posFimCampo = linha.find(delimitador);
-            campo = linha.substr(0, posFimCampo);
-            linha.erase(0, posFimCampo + delimitador.length());
-            umPacote.tempo = stof(campo);
+        // obtendo segundo campo, um float - Time
+        posFimCampo = linha.find(delimitador);
+        campo = linha.substr(0, posFimCampo);
+        linha.erase(0, posFimCampo + delimitador.length());
+        umPacote.tempo = stof(campo);
 
-            // obtendo terceiro campo, um texto - Source
-            posFimCampo = linha.find(delimitador);
-            campo = linha.substr(0, posFimCampo);
-            linha.erase(0, posFimCampo + delimitador.length());
-            strcpy(umPacote.origem, campo.c_str());
+        // obtendo terceiro campo, um texto - Source
+        posFimCampo = linha.find(delimitador);
+        campo = linha.substr(0, posFimCampo);
+        linha.erase(0, posFimCampo + delimitador.length());
+        strcpy(umPacote.origem, campo.c_str());
 
-            // obtendo quarto campo, um texto - Destination
-            posFimCampo = linha.find(delimitador);
-            campo = linha.substr(0, posFimCampo);
-            linha.erase(0, posFimCampo + delimitador.length());
-            strcpy(umPacote.destino, campo.c_str());
+        // obtendo quarto campo, um texto - Destination
+        posFimCampo = linha.find(delimitador);
+        campo = linha.substr(0, posFimCampo);
+        linha.erase(0, posFimCampo + delimitador.length());
+        strcpy(umPacote.destino, campo.c_str());
 
-            // obtendo quinto campo, um texto - Protocol
-            posFimCampo = linha.find(delimitador);
-            campo = linha.substr(0, posFimCampo);
-            linha.erase(0, posFimCampo + delimitador.length());
-            strcpy(umPacote.protocolo, campo.c_str());
+        // obtendo quinto campo, um texto - Protocol
+        posFimCampo = linha.find(delimitador);
+        campo = linha.substr(0, posFimCampo);
+        linha.erase(0, posFimCampo + delimitador.length());
+        strcpy(umPacote.protocolo, campo.c_str());
 
-            // obtendo sexto campo, um texto - Length
-            posFimCampo = linha.find(delimitador);
-            campo = linha.substr(0, posFimCampo);
-            linha.erase(0, posFimCampo + delimitador.length());
-            umPacote.tamanho = stoul(campo);
+        // obtendo sexto campo, um texto - Length
+        posFimCampo = linha.find(delimitador);
+        campo = linha.substr(0, posFimCampo);
+        linha.erase(0, posFimCampo + delimitador.length());
+        umPacote.tamanho = stoul(campo);
 
-            // obtendo último campo, um texto - Info
-            // nesse caso, procuro o último aspas, fazendo busca reversa
-            posFimCampo = linha.rfind("\"");
-            campo = linha.substr(0, posFimCampo);
-            strcpy(umPacote.infomarcao, campo.c_str());
+        // obtendo último campo, um texto - Info
+        // nesse caso, procuro o último aspas, fazendo busca reversa
+        posFimCampo = linha.rfind("\"");
+        campo = linha.substr(0, posFimCampo);
+        strcpy(umPacote.infomarcao, campo.c_str());
 
-            // agora é com você, umPacote já tem o conteúdo de uma linha
+        // agora é com você, umPacote já tem o conteúdo de uma linha
 
-            /*descomente caso queira imprimir o conteúdo de cada pacote
-            cout << umPacote.indice << endl;
-            cout << umPacote.tempo << endl;
-            cout << umPacote.origem << endl;
-            cout << umPacote.destino << endl;
-            cout << umPacote.protocolo << endl;
-            cout << umPacote.tamanho << endl;
-            cout << umPacote.infomarcao << endl;
-            */
-        
-        }
+        /*descomente caso queira imprimir o conteúdo de cada pacote
+        cout << umPacote.indice << endl;
+        cout << umPacote.tempo << endl;
+        cout << umPacote.origem << endl;
+        cout << umPacote.destino << endl;
+        cout << umPacote.protocolo << endl;
+        cout << umPacote.tamanho << endl;
+        cout << umPacote.infomarcao << endl;
+        */
         
     }
 
