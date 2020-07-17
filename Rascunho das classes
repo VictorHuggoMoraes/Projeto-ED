@@ -1,0 +1,107 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+struct pacote  {
+    unsigned indice; 
+    float tempo;
+    char origem[40];
+    char destino[40];
+    char protocolo[18];
+    unsigned tamanho;
+    char infomarcao[1650];
+};
+
+//CABEÇALHO DO SEQUENCE SET
+struct Cabecalho { 
+    unsigned posPrimeiro; //armazena a posição do primeiro bloco.
+    int num; //armarzena a quantidade de blocos
+    unsigned posProximo; //proximo bloco 
+};
+
+//CABEÇALHO DE CADA BLOCO
+struct InfoBloco {
+    unsigned quantidade; //quantidade de elementos validos no bloco;
+    int proximo ; //posição do proximo bloco no arquivo
+};
+    
+
+class Bloco { 
+    friend class SeqSet; //facilita a manipulação dos atributos privados
+    private:
+    InfoBloco cab; 
+    pacote dados[80];
+    int idBloco;
+    public:
+    Bloco() {
+        cab.quantidade = 0;
+        cab.proximo = -1;
+        idBloco = -1;
+    }
+};
+
+
+class SeqSet {
+    private:
+    Cabecalho header; 
+    Bloco* ptrBloco; //usado para armazenar dados do arquivo 
+    public:
+    SeqSet();
+    
+    void Inserir(pacote _p);
+    
+    //Operações no arquivo  
+    void BuscarBloco (unsigned _t); 
+    void LerArquivo();
+    void EscreverNoArquivo(Bloco& _b);
+};
+
+SeqSet::SeqSet() {
+    ofstream arq("trab.dat");  //cria o arquivo
+    //inicializando o cabeçalho
+    header.num = 0;
+    header.posPrimeiro = 1;
+    header.posProximo = sizeof(header); 
+    arq.write((char *) &header, sizeof(Cabecalho)); //insere os dados do cabeçalho
+    arq.close();
+}
+
+void SeqSet::Inserir(pacote _p) {
+    Bloco* auxBloco = new Bloco();
+    
+    if (header.num == 0) { //se não tiver nenhum bloco no arquivo
+        auxBloco->dados[0]= _p; //insere o primeiro elemento
+        auxBloco->cab.quantidade = 1;
+        auxBloco->cab.proximo = -1;
+        ofstream arq("trab.dat");
+        
+        if (arq) {
+            cout << "entrou" << endl;
+            arq.seekp(sizeof(header)); //posiciona o ponteiro de escrita depois do cabeçalho, que ja está no arquivo
+            arq.write((char*) &auxBloco, sizeof(Bloco)); //passa o conteudo do bloco para o arquivo
+            arq.close();
+        }
+    }
+}
+
+void SeqSet::LerArquivo() {  //TESTE
+    ptrBloco = new Bloco();
+    ifstream arq;
+    arq.read((char*) &header, sizeof(Cabecalho));
+    cout << header.num << " " << header.posPrimeiro << " " << header.posProximo << endl;
+    arq.read((char*) &ptrBloco, sizeof(Bloco));
+    cout << ptrBloco->cab.quantidade << " "<< ptrBloco->cab.proximo<<" "<< ptrBloco->idBloco;
+    arq.close();
+}
+
+
+
+int main(){ //TESTE
+    SeqSet teste;
+    pacote _p;
+    teste.Inserir(_p);
+    teste.LerArquivo();
+}
+
+
