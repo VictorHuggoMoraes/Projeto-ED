@@ -3,9 +3,7 @@
 #include <cstring>
 #include <fstream>
 #include <cstdlib>
-#include "noh.h"
-#include "grupo.h"
-
+#include "classes.h" // 
 
 using namespace std;
 
@@ -23,6 +21,7 @@ struct pacote {
 };
 
 int main(){
+    SeqSet Seq;
     std::ifstream arquivo_csv("captura_pacotes.csv");
     if (!arquivo_csv) {
         return EXIT_FAILURE;
@@ -88,17 +87,7 @@ int main(){
         campo = linha.substr(0, posFimCampo);
         strcpy(umPacote.infomarcao, campo.c_str());
 
-        // agora é com você, umPacote já tem o conteúdo de uma linha
 
-        /*descomente caso queira imprimir o conteúdo de cada pacote
-        cout << umPacote.indice << endl;
-        cout << umPacote.tempo << endl;
-        cout << umPacote.origem << endl;
-        cout << umPacote.destino << endl;
-        cout << umPacote.protocolo << endl;
-        cout << umPacote.tamanho << endl;
-        cout << umPacote.infomarcao << endl;
-        */
         
     }
 
