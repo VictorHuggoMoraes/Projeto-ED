@@ -33,7 +33,7 @@ void SeqSet::LerArquivo() {  //TESTE
     cout << "Numero de Blocos: "<< cabSS.num << " Posicao do Primeiro: " << cabSS.posPrimeiro << " Proximo: " << cabSS.posProximo << endl;
     arq.read((char*) &novo, sizeof(Bloco)); //le dados do primeiro bloco
     cout << novo.cabBloco.quantidade << " "<< novo.cabBloco.proximo<<" "<< novo.idBloco << endl;
-    for (int i = 0; i < novo.cabBloco.quantidade; i++) {
+    for (unsigned i = 0; i < novo.cabBloco.quantidade; i++) {
         cout << novo.dados[i].tamanho << " ";
     }
     cout << endl;
