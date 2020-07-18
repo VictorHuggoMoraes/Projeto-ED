@@ -1,5 +1,5 @@
 #include <iostream>
-#include <cstring>
+#include <string>
 #include <fstream>
 #include <cstdlib>
 
@@ -20,7 +20,7 @@ struct pacote {
 
 int main(){
     std::ifstream arquivo_csv("captura_pacotes.csv");
-    if (not(arquivo_csv)) {
+    if (!(arquivo_csv)) {
 		return EXIT_FAILURE;
     }
 
